@@ -37,9 +37,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard guru & siswa
     Route::get('/dashboard', function () {
-        $user = auth()->user();
+        $user = \Illuminate\Support\Facades\Auth::user();
 
-        if ($user->hasRole('guru')) {
+        if ($user->role === 'guru') {
             $tugasList   = Tugas::where('user_id', $user->id)->latest()->take(5)->get();
             $materiCount = Materi::where('user_id', $user->id)->count();
             $kuisCount   = Kuis::where('user_id', $user->id)->count();
@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
             ));
         }
 
-        if ($user->hasRole('siswa')) {
+        if ($user->role === 'siswa') {
             return view('dashboard.siswa');
         }
 
@@ -121,12 +121,12 @@ Route::put('/kuis/{id}/update-link', [KuisController::class, 'updateLink'])->nam
     Route::get('/absensi/export/pdf', [ExportAbsensiController::class, 'pdf'])->name('absensi.export.pdf');
 
     // 🔔 Notifikasi (sudah ada index di atas, ini opsional)
-    Route::get('/notifikasi', function () {
-        $user = auth()->user();
-        return view('notifikasi.index', [
-            'notifikasi' => $user->notifications()->latest()->get(),
-        ]);
-    })->name('notifikasi.index');
+    // Route::get('/notifikasi', function () {
+    //     $user = auth()->user();
+    //     return view('notifikasi.index', [
+    //         'notifikasi' => $user->notifications()->latest()->get(),
+    //     ]);
+    // })->name('notifikasi.index');
 
     // 📈 Statistik
     Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik.index');
