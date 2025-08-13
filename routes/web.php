@@ -121,12 +121,12 @@ Route::put('/kuis/{id}/update-link', [KuisController::class, 'updateLink'])->nam
     Route::get('/absensi/export/pdf', [ExportAbsensiController::class, 'pdf'])->name('absensi.export.pdf');
 
     // 🔔 Notifikasi (sudah ada index di atas, ini opsional)
-    // Route::get('/notifikasi', function () {
-    //     $user = auth()->user();
-    //     return view('notifikasi.index', [
-    //         'notifikasi' => $user->notifications()->latest()->get(),
-    //     ]);
-    // })->name('notifikasi.index');
+    Route::get('/notifikasi', function () {
+        $user = auth()->user();
+        return view('notifikasi.index', [
+            'notifikasi' => $user->notifications()->latest()->get(),
+        ]);
+    })->name('notifikasi.index');
 
     // 📈 Statistik
     Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik.index');
